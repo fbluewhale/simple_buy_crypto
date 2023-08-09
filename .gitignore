@@ -1,0 +1,6 @@
+venv
+.vscode/
+db.*
+reports/*
+realtyna/logs/*
+__pycache__/
