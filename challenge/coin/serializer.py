@@ -11,4 +11,9 @@ from .models import Coin
 class CoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coin
-        fields = "__all__"
+        fields = [
+            "name",
+            "abbreviation_name",
+            "purchase_price",
+            "sale_price",
+        ]
