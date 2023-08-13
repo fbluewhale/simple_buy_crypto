@@ -15,6 +15,7 @@ class RequestLogMiddleware:
 
     def __init__(self, get_response):
         self.get_response = get_response
+        self.api_prefix = "/api/"
 
     def __call__(self, request):
         start_time = time.time()
@@ -24,7 +25,7 @@ class RequestLogMiddleware:
             "request_path": request.get_full_path(),
         }
 
-        if "/api/" in str(request.get_full_path()):
+        if self.api_prefix in str(request.get_full_path()):
             if request.body:
                 req_body = request.body
                 req_body = str(req_body, encoding="utf-8")
@@ -46,12 +47,12 @@ class RequestLogMiddleware:
                 log_data["response_body"] = response_body
             log_data["duration"] = time.time() - start_time
             if response.status_code >= status.HTTP_400_BAD_REQUEST:
-                app_logger.info(msg=log_data)
-                return response
-            request_logger.info(msg=log_data)
+                app_logger.info(msg=json.dumps(log_data))
+            else:
+                request_logger.info(msg=json.dumps(log_data))
             return response
         except:
-            error_logger.error(msg=log_data)
+            error_logger.error(msg=json.dumps(log_data))
             return response
 
     def process_exception(self, request, exception):
