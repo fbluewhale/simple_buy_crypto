@@ -39,7 +39,7 @@ class OrderTest(TestCase):
         )
         order = Order.objects.get(user=user)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_creation_coin_valid_result(self):
         user = UserProfile.objects.get(user=DjangoUser.objects.get(username="ali"))

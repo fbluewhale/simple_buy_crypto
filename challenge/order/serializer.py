@@ -12,7 +12,8 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            "user" "coin",
+            "user",
+            "coin",
             "purchase_price",
             "sale_price",
             "total_price",
@@ -35,10 +36,12 @@ class ByCryptoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            "user" "coin",
+            "user",
+            "coin",
             "purchase_price",
             "sale_price",
             "total_price",
             "external_checkout",
             "amount",
+            "coin_name",
         ]
