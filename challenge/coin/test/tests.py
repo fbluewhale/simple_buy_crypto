@@ -1,10 +1,12 @@
 from django.test import TestCase
-from ..models import Coin
-from rest_framework import status
 from django.test import TestCase
+
+from rest_framework import status
+from rest_framework.test import APIRequestFactory, APIClient
+
 from ..serializer import CoinSerializer
 from ..views import *
-from rest_framework.test import APIRequestFactory
+from ..models import Coin
 
 
 class CoinTest(TestCase):
@@ -26,7 +28,7 @@ class CoinTest(TestCase):
 
 
 class GetAllCoinTest(TestCase):
-    """Test module for GET all Coins API"""
+    """Test module for GET all Coins API result"""
 
     def setUp(self):
         Coin.objects.create(
@@ -36,7 +38,16 @@ class GetAllCoinTest(TestCase):
             name="cardano", abbreviation_name="ADA", purchase_price=2, sale_price=0
         )
 
-    def test_get_all_coins(self):
+    def test_get_all_coins_valid_status_code(self):
+        factory = APIRequestFactory()
+        view = CoinsViewSet.as_view({"get": "list"})
+        request = factory.get("CoinsViewSet")
+        Coins = Coin.objects.all()
+        response = view(request)
+        serializer = CoinSerializer(Coins, many=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_all_coins_valid_result(self):
         factory = APIRequestFactory()
         view = CoinsViewSet.as_view({"get": "list"})
         request = factory.get("CoinsViewSet")
@@ -44,4 +55,9 @@ class GetAllCoinTest(TestCase):
         response = view(request)
         serializer = CoinSerializer(Coins, many=True)
         self.assertEqual(serializer.data, response.data.get("results"))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_all_coins_invalid_method(self):
+        client = APIClient()
+        request = client.post("/api/coin/coin/", data={})
+        Coins = Coin.objects.all()
+        self.assertEqual(request.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
