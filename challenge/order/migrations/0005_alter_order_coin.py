@@ -5,16 +5,19 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('coin', '0001_initial'),
-        ('order', '0004_order_external_checkout_alter_order_total_price'),
+        ("coin", "0001_initial"),
+        ("order", "0004_order_external_checkout_alter_order_total_price"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='coin',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='coin', to='coin.coin'),
+            model_name="order",
+            name="coin",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="coin",
+                to="coin.coin",
+            ),
         ),
     ]
