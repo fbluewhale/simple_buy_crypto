@@ -5,15 +5,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('account', '0001_initial'),
+        ("account", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='User',
-            new_name='UserProfile',
+            old_name="User",
+            new_name="UserProfile",
         ),
     ]
