@@ -2,6 +2,7 @@ venv
 .vscode/
 db.*
 reports/*
-realtyna/logs/*
+challenge/logs/*
 __pycache__/
 docker-compose.yaml
+*.log
