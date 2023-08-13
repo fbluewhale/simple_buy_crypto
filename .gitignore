@@ -4,3 +4,4 @@ db.*
 reports/*
 realtyna/logs/*
 __pycache__/
+docker-compose.yaml
