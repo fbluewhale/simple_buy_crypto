@@ -6,6 +6,7 @@ from rest_framework import authentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.authtoken.models import Token
 from drf_yasg.utils import swagger_auto_schema
 
@@ -27,7 +28,10 @@ class LoginApi(APIView):
         user = serializer.validated_data
         user_serializer = UserProfileSerializer(user)
         token, _ = Token.objects.get_or_create(user=user.user)
-        return Response(data={**user_serializer.data, "token": token.key}, status=201)
+        return Response(
+            data={**user_serializer.data, "token": token.key},
+            status=status.HTTP_202_ACCEPTED,
+        )
 
 
 class GetUserDetailApi(APIView):
