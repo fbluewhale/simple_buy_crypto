@@ -16,6 +16,6 @@ class CoinsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     This viewset automatically provides `list` actions to get all coins detail
     """
 
-    decorators = [swagger_auto_schema(responses=Coin)]
+    decorators = [swagger_auto_schema(responses=CoinSerializer)]
     queryset = Coin.objects.all()
     serializer_class = CoinSerializer
