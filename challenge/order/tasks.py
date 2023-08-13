@@ -1,10 +1,11 @@
+import logging
 from celery import shared_task
 from django.db.models import Sum
 from order.models import Order
 from utils.utils import buy_from_exchange
 
 
-# @shared_task
+@shared_task
 def external_checkout():
     unexchanged_order = Order.objects.select_for_update().filter(
         external_checkout=False
@@ -16,5 +17,5 @@ def external_checkout():
             total_amount = unexchanged_order.aggregate(Sum("amount")).get(
                 "total_amount__sum"
             )
-            buy_from_exchange(coin, total_amount)
+            result = buy_from_exchange(coin, total_amount)
             unexchanged_order.update(external_checkout=True)

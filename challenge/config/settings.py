@@ -145,8 +145,8 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
@@ -159,18 +159,27 @@ LOGGING = {
     "handlers": {
         "error": {
             "level": "ERROR",
-            "class": "logging.FileHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "filename": f"{BASE_DIR}/logs/errors.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
         },
         "incoming": {
             "level": "DEBUG",
-            "class": "logging.FileHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "filename": f"{BASE_DIR}/logs/incoming.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
         },
         "app": {
             "level": "DEBUG",
-            "class": "logging.FileHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "filename": f"{BASE_DIR}/logs/app.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
+        },
+        "celery": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/celery.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
         },
     },
     "loggers": {
@@ -186,6 +195,10 @@ LOGGING = {
         "app": {
             "handlers": ["app"],
             "level": "INFO",
+        },
+        "celery": {
+            "handlers": ["celery"],
+            "level": "DEBUG",
         },
     },
 }
